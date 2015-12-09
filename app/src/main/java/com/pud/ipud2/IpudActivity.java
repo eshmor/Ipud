@@ -1,13 +1,18 @@
 package com.pud.ipud2;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
+import java.io.IOException;
 
 public class IpudActivity extends AppCompatActivity {
 
@@ -26,6 +31,71 @@ public class IpudActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        final Button thanksButton = (Button) findViewById(R.id.ThanksBtnId);
+        thanksButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.thanks);
+                mediaPlayer.start(); // no need to call prepare(); create() does that for you
+                // Perform action on click
+            }
+        });
+
+        final Button foodButton = (Button) findViewById(R.id.FoodBtnId);
+        foodButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.food);
+                mediaPlayer.start(); // no need to call prepare(); create() does that for you
+                // Perform action on click
+            }
+        });
+
+
+
+
+
+
+        final Button firePallButton = (Button) findViewById(R.id.firePalllBtnId);
+        firePallButton.setOnClickListener(new View.OnClickListener() {
+            boolean isPlaying =false;
+            final MediaPlayer firePallmediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.firepall);
+            public void onClick(View v) {
+
+
+                if(!isPlaying){
+                    firePallmediaPlayer.start();
+                    ((Button)v).setText(R.string.stopFirePallTxt);
+                    isPlaying = true;
+                }else{
+                    isPlaying = false;
+                    firePallmediaPlayer.stop();
+                    ((Button)v).setText(R.string.firePallTxt);
+                    try {
+                        firePallmediaPlayer.prepare();
+                    } catch (IOException e) {
+                        Log.e("STOP", e.getMessage());
+                    }
+                }
+
+            }
+        });
+
+
+
+
+
+
+        final Button heliButton = (Button) findViewById(R.id.heliBtnId);
+        heliButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.heli);
+                mediaPlayer.start();            }
+        });
+
+
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.ipud);
+        mediaPlayer.start();
     }
 
     @Override

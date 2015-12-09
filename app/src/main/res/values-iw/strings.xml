@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ipud 2</string>
+    <string name="action_settings">Settings</string>
+    <string name="thanksBtnTxt">תודה</string>
+    <string name="foodBtTxt">food</string>
+    <string name="firePallTxt">Fire pall</string>
+    <string name="helilTxt">Fire pall</string>
+</resources>

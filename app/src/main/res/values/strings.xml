@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Ipud 2</string>
     <string name="action_settings">Settings</string>
+    <string name="thanksBtnTxt">תודה</string>
+    <string name="foodBtTxt">אוכל</string>
+    <string name="firePallTxt">עמוד האש</string>
+    <string name="stopFirePallTxt">עצור עמוד</string>
+    <string name="helilTxt">מסוק</string>
+
 </resources>
