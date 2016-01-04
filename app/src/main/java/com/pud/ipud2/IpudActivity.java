@@ -16,6 +16,7 @@ import java.io.IOException;
 
 public class IpudActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +90,15 @@ public class IpudActivity extends AppCompatActivity {
         heliButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.heli);
+                mediaPlayer.start();            }
+        });
+
+
+
+        final Button casperButton = (Button) findViewById(R.id.casperBtnId);
+        casperButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.cat);
                 mediaPlayer.start();            }
         });
 
