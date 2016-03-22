@@ -104,6 +104,13 @@ public class IpudActivity extends AppCompatActivity {
 
 
 
+        final Button tocButton = (Button) findViewById(R.id.tocBtnId);
+        tocButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.toc);
+                mediaPlayer.start();            }
+        });
+
         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.ipud);
         mediaPlayer.start();
     }
