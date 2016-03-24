@@ -104,7 +104,6 @@ public class IpudActivity extends AppCompatActivity {
 
 
 
-
         final Button tocButton = (Button) findViewById(R.id.tocBtnId);
         tocButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
