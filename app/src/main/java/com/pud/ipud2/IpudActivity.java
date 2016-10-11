@@ -111,6 +111,15 @@ public class IpudActivity extends AppCompatActivity {
                 mediaPlayer.start();            }
         });
 
+
+        final Button meatLessButton = (Button) findViewById(R.id.MeatLessBtnId);
+        meatLessButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.meatless);
+                mediaPlayer.start();            }
+        });
+
+
         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.ipud);
         mediaPlayer.start();
     }
