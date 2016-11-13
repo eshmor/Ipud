@@ -136,6 +136,28 @@ public class IpudActivity extends AppCompatActivity {
         });
 
 
+        final Button pleaseButton = (Button) findViewById(R.id.PleaseBtnId);
+        pleaseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int resourceId = R.raw.please;
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), resourceId);
+                mediaPlayer.start(); // no need to call prepare(); create() does that for you
+                // Perform action on click
+
+            }
+        });
+
+
+        pleaseButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                int resourceId = R.raw.please;
+                shareSound(resourceId);
+                return false;
+            }
+        });
+
+
 
         final Button firePallButton = (Button) findViewById(R.id.firePalllBtnId);
 
