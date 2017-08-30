@@ -10,5 +10,7 @@
     <string name="toc">TOC</string>
     <string name="MeatLess" >בשורע</string>
     <string name="pleaseBtnTxt">בבקשה</string>
+    <string name="RecordBtn" >Record</string>
+    <string name="PudalachBtnTxt">פודלך</string>
 
 </resources>

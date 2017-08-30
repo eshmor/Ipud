@@ -6,4 +6,6 @@
     <string name="foodBtTxt">food</string>
     <string name="firePallTxt">Fire pall</string>
     <string name="helilTxt">Fire pall</string>
+    <string name="RecordBtn" >הקלט</string>
+    <string name="PudalachBtnTxt">פודלך</string>
 </resources>

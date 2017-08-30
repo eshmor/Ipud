@@ -104,6 +104,19 @@ public class IpudActivity extends AppCompatActivity {
             }
         });
 
+        final Button pudalachButton = (Button) findViewById(R.id.PudalachBtnId);
+        pudalachButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int resourceId = R.raw.pudalach;
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), resourceId);
+                mediaPlayer.start(); // no need to call prepare(); create() does that for you
+                // Perform action on click
+
+
+            }
+        });
+        //PudalachBtnId
+
         thanksButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
