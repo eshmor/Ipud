@@ -12,5 +12,6 @@
     <string name="pleaseBtnTxt">בבקשה</string>
     <string name="RecordBtn" >Record</string>
     <string name="PudalachBtnTxt">פודלך</string>
+    <string name="share_failed">Unable to share audio</string>
 
 </resources>

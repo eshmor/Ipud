@@ -1,72 +1,27 @@
 package com.pud.ipud2;
 
-import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class IpudActivity extends AppCompatActivity {
-
-    private static final int EXTERNAL_STORAGE_REQUEST_CODE = 123;
-    public boolean saveAs(int resSoundId) {
-        byte[] buffer = null;
-        InputStream fIn = getBaseContext().getResources().openRawResource(resSoundId);
-        int size = 0;
-
-        try {
-            size = fIn.available();
-            buffer = new byte[size];
-            fIn.read(buffer);
-            fIn.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            return false;
-        }
-
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/yourapp/temp/";
-        String filename = getResources().getResourceEntryName(resSoundId) + ".mp3";
-
-        boolean exists = (new File(path)).exists();
-        if (!exists) {
-            new File(path).mkdirs();
-        }
-
-        FileOutputStream save;
-        try {
-            save = new FileOutputStream(path + filename);
-            save.write(buffer);
-            save.flush();
-            save.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            return false;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            return false;
-        }
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +29,6 @@ public class IpudActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ipud);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_REQUEST_CODE);
-        } else {
-            createDirectory();
-        }
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -296,29 +243,34 @@ public class IpudActivity extends AppCompatActivity {
     }
 
     private void shareSound(int resourceId) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-
-        sendIntent.setType("audio/mp3");
-        String resourceScheme = "res";
-
-        saveAs(resourceId);
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/yourapp/temp/";
-        String filename = getResources().getResourceEntryName(resourceId) + ".mp3";
-
-        Uri uri1 = Uri.parse(path + filename);
-        sendIntent.putExtra(Intent.EXTRA_STREAM,uri1 );
-        startActivity(sendIntent);
-    }
-
-    private void createDirectory() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/yourapp/temp/";
-
-        boolean exists = (new File(path)).exists();
-        if (!exists) {
-            new File(path).mkdirs();
+        File shareDirectory = new File(getCacheDir(), "shared_audio");
+        if (!shareDirectory.exists() && !shareDirectory.mkdirs()) {
+            Toast.makeText(this, R.string.share_failed, Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        File audioFile = new File(
+                shareDirectory, getResources().getResourceEntryName(resourceId) + ".mp3");
+        try (InputStream input = getResources().openRawResource(resourceId);
+             FileOutputStream output = new FileOutputStream(audioFile)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            Log.e("IpudActivity", "Unable to prepare audio for sharing", e);
+            Toast.makeText(this, R.string.share_failed, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Uri audioUri = FileProvider.getUriForFile(
+                this, getPackageName() + ".fileprovider", audioFile);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("audio/mpeg");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, audioUri);
+        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(sendIntent, null));
     }
 
     @Override
